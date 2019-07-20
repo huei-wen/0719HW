@@ -15,15 +15,16 @@
 
         h1 {
             text-align: center;
-            border-bottom: 3px solid rgb(207, 123, 44);
+            border-bottom: 3px solid rgb(15, 143, 15);
             font-size: 3em;
+            color: rgb(8, 58, 43);
             margin-bottom: 50px;
         }
 
         fieldset {
             margin: 1.5em 0 0 0;
             padding: 0;
-            border: 2px solid rgb(207, 123, 44);
+            border: 2px solid rgb(15, 143, 15);
         }
 
         legend {
@@ -65,53 +66,129 @@
             height: 3em;
             margin: -1em auto 1em 18em;
         }
+
+        fieldset div {
+            font-family: Microsoft JhengHei;
+            line-height: 24px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin: 1em auto 0em 5em;
+            font-weight: bold;
+            color: rgb(10, 90, 50);
+        }
+
+        fieldset div input.form-control {
+            line-height: 24px;
+            height: 24px;
+            width: 20em;
+            margin: -1em auto 0em 1em;
+            border: 1px solid rgb(155, 163, 160);
+        }
+
+        p {
+            color: red;
+        }
+
+        .btn {
+            /* float: right; */
+            /* border-style: none; */
+            width: 4em;
+            height: 2em;
+            margin: 1em auto 2em 30em;
+            /* color: rgb(44, 119, 90); */
+        }
     </style>
 </head>
 
 <body>
     <h1>join us</h1>
-    <p>輸入表單資料，不要按下「Send」送出，關閉瀏覽器，然後重新回到本頁，自動回復先前輸入的內容。</p>
+    <p>※注意事項:姓名、密碼、行動電話為必填欄位。</p>
     <form method="post" action="http://exec.hostzi.com/echo.php">
-
         <fieldset>
             <legend>填寫表單</legend>
-            <ol>
-                <li><label for="txtName">姓名:</label> <input id="txtName" name="txtName" type="text"
-                        class="formFields" /></li>
-                <li><label for="txtPhone">密碼:</label> <input id="txtPhone" name="txtPhone" type="text"
-                        class="formFields" /></li>
-                <li><label for="txtEmail">Email:</label> <input id="txtEmail" name="txtEmail" type="text"
-                        class="formFields" /></li>
-                <li><label for="txtPhone">電話:</label> <input id="txtPhone" name="txtPhone" type="text"
-                        class="formFields" /></li>
-            </ol>
+            <form class="form-horizontal">
 
-            <input id="btnSubmit" name="btnSubmit" type="submit" class="submit" value="Send" />
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textName">姓名*</label>
+                    <div class="col-md-4">
+                        <input id="textName" name="textName" type="text" placeholder="請輸入中文姓名"
+                            class="form-control input-md">
+                    </div>
+                </div>
 
+                <!-- Password input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textPassword">密碼*</label>
+                    <div class="col-md-4">
+                        <input id="textPassword" name="textPassword" type="password" placeholder="密碼強度越高越好"
+                            class="form-control input-md">
+                        <span class="help-block" style="font-size: 0.8em;">長度限制8以上</span>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textEmail">Email</label>
+                    <div class="col-md-4">
+                        <input id="textEmail" name="textEmail" type="text" placeholder="請輸入您的Email"
+                            class="form-control input-md">
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="textPhone">行動電話*</label>
+                    <div class="col-md-4">
+                        <input id="textPhone" name="textPhone" type="text" placeholder="請輸入您的行動電話"
+                            class="form-control input-md">
+                        <span class="help-block" style="font-size: 0.8em;">格式:09XXXXXXXX</span>
+                    </div>
+                </div>
+            </form>
+            <!-- <input id="btnSubmit" name="btnSubmit" type="submit" class="submit" value="提交" /> -->
+            <input id="btnSubmit" name="btnSubmit" type="submit" class="btn" value="提交" />
         </fieldset>
-
     </form>
 
     <span id="test"></span>
     <script>
         function doChange() {
-            // document.getElementById("test").innerHTML += this.name + ":" + this.value + "<br>";
+            document.getElementById("test").innerHTML += this.name + ":" + this.value + "<br>";
             localStorage.setItem(this.name, this.value);
         }
         function readAndShow() {
-            if (localStorage["txtName"])
-                document.getElementById("txtName").value = localStorage["txtName"];
-            if (localStorage["txtEmail"])
-                document.getElementById("txtEmail").value = localStorage["txtEmail"];
-            if (localStorage["txtPhone"])
-                document.getElementById("txtPhone").value = localStorage["txtPhone"];
+            if (localStorage["textName"])
+                document.getElementById("textName").value = localStorage["textName"];
+            if (localStorage["textPassword"])
+                document.getElementById("textPassword").value = localStorage["textPassword"];
+            if (localStorage["textEmail"])
+                document.getElementById("textEmail").value = localStorage["textEmail"];
+            if (localStorage["textPhone"])
+                document.getElementById("textPhone").value = localStorage["textPhone"];
+        }
+        function isInvalid() {
+            if (localStorage["textName"] == null) {
+                alert("缺少必要欄位，姓名");
+            }
+            if (localStorage["textPassword"] == null) {
+                alert("缺少必要欄位,密碼");
+            }
+            if (localStorage["textPhone"] == null) {
+                alert("缺少必要欄位,電話");
+            }
         }
 
         window.onload = readAndShow;
 
-        document.getElementById("txtName").onkeyup = doChange;
-        document.getElementById("txtEmail").onkeyup = doChange;
-        document.getElementById("txtPhone").onkeyup = doChange;
+
+        document.getElementById("textName").onkeyup = doChange;
+        document.getElementById("textPassword").onkeyup = doChange;
+        document.getElementById("textEmail").onkeyup = doChange;
+        document.getElementById("textPhone").onkeyup = doChange;
+
+
+        document.forms[0].onsubmit = function () { window.onload = isInvalid; };
         document.forms[0].onsubmit = function () { localStorage.clear(); };
     </script>
 </body>
