@@ -90,12 +90,9 @@
         }
 
         .btn {
-            /* float: right; */
-            /* border-style: none; */
             width: 4em;
             height: 2em;
             margin: 1em auto 2em 30em;
-            /* color: rgb(44, 119, 90); */
         }
     </style>
 </head>
@@ -103,58 +100,52 @@
 <body>
     <h1>join us</h1>
     <p>※注意事項:姓名、密碼、行動電話為必填欄位。</p>
-    <form method="post" action="http://exec.hostzi.com/echo.php">
+    <form method="post" id="frm" name="frm" action="http://exec.hostzi.com/echo.php" onsubmit="return isInvalid()">
         <fieldset>
             <legend>填寫表單</legend>
-            <form class="form-horizontal">
-
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textName">姓名*</label>
-                    <div class="col-md-4">
-                        <input id="textName" name="textName" type="text" placeholder="請輸入中文姓名"
-                            class="form-control input-md">
-                    </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textName">姓名*</label>
+                <div class="col-md-4">
+                    <input id="textName" name="textName" type="text" placeholder="請輸入中文姓名"
+                        class="form-control input-md">
                 </div>
+            </div>
 
-                <!-- Password input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textPassword">密碼*</label>
-                    <div class="col-md-4">
-                        <input id="textPassword" name="textPassword" type="password" placeholder="密碼強度越高越好"
-                            class="form-control input-md">
-                        <span class="help-block" style="font-size: 0.8em;">長度限制8以上</span>
-                    </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textPassword">密碼*</label>
+                <div class="col-md-4">
+                    <input id="textPassword" name="textPassword" type="password" placeholder="密碼強度越高越好"
+                        class="form-control input-md">
+                    <span class="help-block" style="font-size: 0.8em;">長度限制8以上</span>
                 </div>
+            </div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textEmail">Email</label>
-                    <div class="col-md-4">
-                        <input id="textEmail" name="textEmail" type="text" placeholder="請輸入您的Email"
-                            class="form-control input-md">
-                    </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textEmail">Email</label>
+                <div class="col-md-4">
+                    <input id="textEmail" name="textEmail" type="text" placeholder="請輸入您的Email"
+                        class="form-control input-md">
                 </div>
+            </div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textPhone">行動電話*</label>
-                    <div class="col-md-4">
-                        <input id="textPhone" name="textPhone" type="text" placeholder="請輸入您的行動電話"
-                            class="form-control input-md">
-                        <span class="help-block" style="font-size: 0.8em;">格式:09XXXXXXXX</span>
-                    </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textPhone">行動電話*</label>
+                <div class="col-md-4">
+                    <input id="textPhone" name="textPhone" type="text" placeholder="請輸入您的行動電話"
+                        class="form-control input-md">
+                    <span class="help-block" style="font-size: 0.8em;">格式:09XXXXXXXX</span>
                 </div>
-            </form>
-            <!-- <input id="btnSubmit" name="btnSubmit" type="submit" class="submit" value="提交" /> -->
+            </div>
             <input id="btnSubmit" name="btnSubmit" type="submit" class="btn" value="提交" />
+
         </fieldset>
     </form>
 
     <span id="test"></span>
+    <script src="jquery-1.9.1.min.js"></script>
     <script>
         function doChange() {
-            document.getElementById("test").innerHTML += this.name + ":" + this.value + "<br>";
+            // document.getElementById("test").innerHTML += this.name + ":" + this.value + "<br>";
             localStorage.setItem(this.name, this.value);
         }
         function readAndShow() {
@@ -167,29 +158,38 @@
             if (localStorage["textPhone"])
                 document.getElementById("textPhone").value = localStorage["textPhone"];
         }
+
         function isInvalid() {
-            if (localStorage["textName"] == null) {
+            if (document.getElementById("textName").value.length == 0) {
                 alert("缺少必要欄位，姓名");
+                return false;
             }
-            if (localStorage["textPassword"] == null) {
-                alert("缺少必要欄位,密碼");
+            else if (document.getElementById("textPassword").value.length < 8) {
+                alert("請檢查密碼欄位是否填寫有誤");
+                return false;
             }
-            if (localStorage["textPhone"] == null) {
-                alert("缺少必要欄位,電話");
+            else if (document.getElementById("textEmail").value.length > 0) {
+                if (document.getElementById("textEmail").value.indexOf("@") <= 0) {
+                    alert("請檢查Email欄位是否填寫有誤");
+                    return false;
+                }
+            }
+            else if (document.getElementById("textPhone").value.length < 10) {
+                alert("請檢查電話欄位是否填寫有誤");
+                return false;
+            } else {
+                return true;
             }
         }
-
-        window.onload = readAndShow;
-
 
         document.getElementById("textName").onkeyup = doChange;
         document.getElementById("textPassword").onkeyup = doChange;
         document.getElementById("textEmail").onkeyup = doChange;
         document.getElementById("textPhone").onkeyup = doChange;
 
-
-        document.forms[0].onsubmit = function () { window.onload = isInvalid; };
-        document.forms[0].onsubmit = function () { localStorage.clear(); };
+        $("#frm").submit(function () {
+            localStorage.clear();
+        });
     </script>
 </body>
 
